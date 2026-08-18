@@ -1,0 +1,228 @@
+module main
+author unknown
+version 1 0 
+description ''
+variables speed direction 'forward back' forward backward stop 'left right' right left straight command x y msg 
+
+  spec ' ' 'back' 'back'
+  spec ' ' 'left' 'left'
+  spec ' ' 'move' 'move'
+  spec ' ' 'right' 'right'
+
+to back {
+  '[io:setServo]' 26 1500
+  '[io:setServo]' 13 1500
+}
+
+to left {
+  '[io:setServo]' 13 1500
+  '[io:setServo]' 26 1700
+}
+
+to move {
+  '[io:setServo]' 13 1700
+  '[io:setServo]' 26 1700
+}
+
+to right {
+  '[io:setServo]' 13 1700
+  '[io:setServo]' 26 1500
+}
+
+script 937 50 {
+to back {}
+}
+
+script 599 56 {
+whenStarted
+'[serial:open]' 115200
+forever {
+  msg = ('[data:join]' '' ('[serial:read]'))
+  sayIt msg
+  if ((size msg) > 0) {
+    if ((at 1 msg) == 'L') {left}
+    if ((at 1 msg) == 'M') {move}
+    if ((at 1 msg) == 'R') {right}
+    if ((at 1 msg) == 'S') {back}
+  }
+}
+}
+
+script 1234 57 {
+to move {}
+}
+
+script 50 63 {
+whenStarted
+'[ble:radioSetGroup]' 109
+'[io:setServo]' 13 1500
+'[io:setServo]' 26 1500
+forever {
+  if (bleRadio_messageReceived) {
+    speed = ('[data:split]' (bleRadio_receivedString) ',')
+    left = ('[data:convertType]' (at 1 speed) 'number')
+    right = ('[data:convertType]' (at 2 speed) 'number')
+    sayIt ('[data:join]' left ',' right)
+    '[io:setServo]' 26 right
+    '[io:setServo]' 13 left
+  }
+}
+}
+
+script 943 182 {
+to right {}
+}
+
+script 1235 186 {
+to left {}
+}
+
+
+module 'BLE Radio' Comm
+author MicroBlocks
+version 1 1 
+description 'This library supports easy message exchange among boards that support Bluetooth Low Energy (BLE).
+
+A message can contain a string, a number, or both. Messages are received by all boards in the same BLE radio group as the sender.
+
+This library is similar to the Radio library, but messages are sent via BLE advertisements instead of the Nordic radio system.
+'
+variables _bleRadio_lastNumber _bleRadio_lastString 
+
+  spec ' ' 'bleRadio_sendNumber' 'ble send number _' 'num' 123
+  spec ' ' 'bleRadio_sendString' 'ble send string _' 'str' 'Hello!'
+  spec ' ' 'bleRadio_sendPair' 'ble send pair _ = _' 'str num' 'light' 10
+  space
+  spec 'r' 'bleRadio_messageReceived' 'ble message received?'
+  spec 'r' 'bleRadio_receivedInteger' 'ble last number'
+  spec 'r' 'bleRadio_receivedString' 'ble last string'
+  space
+  spec ' ' '[ble:radioSetGroup]' 'ble set group _ (0-255)' 'num' 0
+
+to bleRadio_messageReceived {
+  local 'msg' ('[ble:radioReceive]')
+  if ((size msg) < 4) {
+    return (booleanConstant false)
+  }
+  _bleRadio_lastNumber = ((at 1 msg) | (((at 2 msg) << 8) | (((at 3 msg) << 16) | ((at 4 msg) << 24))))
+  local 'highByte' (at 4 msg)
+  if (and (64 <= highByte) (highByte <= 127)) {
+    _bleRadio_lastNumber = 'out of range number (positve)'
+  }
+  if (and (128 <= highByte) (highByte <= 191)) {
+    _bleRadio_lastNumber = 'out of range number (negative)'
+  }
+  _bleRadio_lastString = ('[data:join]' '' ('[data:copyFromTo]' msg 5))
+  return (booleanConstant true)
+}
+
+to bleRadio_receivedInteger {
+  return _bleRadio_lastNumber
+}
+
+to bleRadio_receivedString {
+  if (_bleRadio_lastString == 0) {_bleRadio_lastString = ''}
+  return _bleRadio_lastString
+}
+
+to bleRadio_sendNumber n {
+  bleRadio_sendPair '' n
+}
+
+to bleRadio_sendPair s n {
+  local 'msg' ('[data:newByteArray]' 4)
+  comment 'MicroBlocks BLE Radio message format:
+    MicroBlocks integer (4 bytes, LSB first)
+    string (UTF8, variable length)'
+  atPut 1 msg (n & 255)
+  atPut 2 msg ((n >> 8) & 255)
+  atPut 3 msg ((n >> 16) & 255)
+  atPut 4 msg ((n >> 24) & 255)
+  msg = ('[data:join]' msg ('[data:asByteArray]' s))
+  '[ble:radioStartBeam]' msg
+  waitMillis 500
+  '[ble:radioStopBeam]'
+}
+
+to bleRadio_sendString s {
+  bleRadio_sendPair s 0
+}
+
+
+module 'D1 Motor Shield' Output
+author MicroBlocks
+version 1 0 
+choices d1_motor A B 
+description 'Support for Wemos/Lolin D1 mini motor shield.
+https://www.wemos.cc/en/latest/d1_mini_shield/motor.html'
+
+  spec ' ' 'd1MotorControl' 'd1 motor _ power _' 'menu.d1_motor num' 'A' 50
+  spec ' ' 'd1MotorStopAll' 'd1 stop all motors'
+  spec ' ' '_d1MotorSetPower' '_d1MotorSetPower _ label _' 'num num' 0 100
+  spec ' ' '_d1MotorSetPWMFrequency' '_d1MotorSetPWMFrequency'
+  spec ' ' '_d1MotorSendCmd' '_d1MotorSendCmd _' 'num' 10
+
+to '_d1MotorSendCmd' bytes {
+  '[sensors:i2cWrite]' 48 bytes
+  local 'result' (newList 1)
+  '[sensors:i2cRead]' 48 result
+}
+
+to '_d1MotorSetPWMFrequency' {
+  comment 'Set PWM frequency for both motors to 1000 Hz'
+  local 'freq' 1000
+  local 'cmd' (newList 5)
+  atPut 1 cmd 5
+  atPut 2 cmd 2
+  atPut 3 cmd (freq & 255)
+  atPut 4 cmd ((freq >> 8) & 255)
+  atPut 5 cmd ((freq >> 16) & 255)
+  '_d1MotorSendCmd' cmd
+}
+
+to '_d1MotorSetPower' motorNum power {
+  comment 'motorNum: 0, 1, 2 (both)
+Power: 0-100'
+  '_d1MotorSetPWMFrequency'
+  local 'pwr' (100 * (absoluteValue power))
+  local 'cmd' (newList 4)
+  atPut 1 cmd 6
+  atPut 2 cmd motorNum
+  atPut 3 cmd (pwr & 255)
+  atPut 4 cmd ((pwr >> 8) & 255)
+  '_d1MotorSendCmd' cmd
+}
+
+to d1MotorControl motor power {
+  if ('A' == motor) {
+    motorNum = 0
+  } else {
+    motorNum = 1
+  }
+  '_d1MotorSetPower' motorNum (absoluteValue power)
+  if (power > 0) {
+    comment 'Clockwise'
+    '_d1MotorSendCmd' ('[data:makeList]' 4 motorNum 1)
+  } (power < 0) {
+    comment 'Counter clockwise'
+    '_d1MotorSendCmd' ('[data:makeList]' 4 motorNum 2)
+  } (power == 0) {
+    comment 'Stop motor (brake)'
+    '_d1MotorSendCmd' ('[data:makeList]' 4 motorNum 3)
+  }
+}
+
+to d1MotorStopAll {
+  d1MotorControl 'A' 0
+  d1MotorControl 'B' 0
+}
+
+
+module 'Servo Primitives' Output
+author MicroBlocks
+version 1 0 
+tags servo motor angle rotation position 
+description 'Low level servo motor primitives. You are probably looking for the Servo library in the folder above.'
+
+  spec 'r' '[io:hasServo]' 'has servo support'
+  spec ' ' '[io:setServo]' 'set servo pin _ to _ usecs' 'num num' 0 1500
