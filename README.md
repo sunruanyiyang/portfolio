@@ -94,3 +94,5 @@ Data Science · Human-Computer Interaction · Physical Computing · Interactive 
 ## Contact
 
 Duke Kunshan University
+ruanyiyang.sun@dukekunshan.edu.cn
+sunruanyiyang1027@gmail.com
