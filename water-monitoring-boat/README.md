@@ -67,7 +67,7 @@ I also learned that building an interactive physical system requires repeated te
 
 ## Photos
 
-Project photos will be added here.
+![Assembling our boat](3D printing boat.jpg)
 
 ---
 
