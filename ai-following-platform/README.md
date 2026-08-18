@@ -54,9 +54,11 @@ This experience increased my interest in human-machine interaction and interacti
 
 ---
 
-## Photos
+## Photos And Videos
 
-Project photos will be added here.
+![Apperance of what our vechical looks like](appearance.jpg)
+
+![Testing our vechical](demo video.mp4)
 
 ---
 
