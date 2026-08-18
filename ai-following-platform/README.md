@@ -58,7 +58,10 @@ This experience increased my interest in human-machine interaction and interacti
 
 ![Apperance of what our vechical looks like](appearance.jpg)
 
-![Testing our vechical](demo video.mp4)
+Testing our vechical
+https://github.com/user-attachments/assets/4432c3cc-d79a-4eeb-a3c2-7fbf189aeca7
+
+
 
 ---
 
