@@ -49,7 +49,19 @@ Sensor integration · Embedded systems · Prototyping · Hardware testing
 [View Project](./water-monitoring-boat)
 
 
-### 3. S-Box Hardware Optimization
+### 3. Pharmaceutical Document Intelligence System
+
+An AI-focused externship project exploring document processing, OCR, RAG, and LLM-based question answering for pharmaceutical documentation.
+
+**Technologies:**  
+Python · OCR · LlamaIndex · RAG · Embeddings · LLMs · Gradio
+
+**Skills:**  
+Data processing · NLP · Information retrieval · AI application development
+
+[View Project](./pharmaceutical-document-intelligence)
+
+### 4. S-Box Hardware Optimization
 
 An ongoing project exploring logic synthesis and hardware optimization for cryptographic S-box implementations, in order to reduce the delay on the critical path.
 
