@@ -1,0 +1,26 @@
+# Core RAG framework
+llama-index>=0.11.0
+llama-index-llms-gemini
+llama-index-embeddings-huggingface
+llama-index-retrievers-bm25
+llama-index-vector-stores-chroma
+chromadb
+
+# PDF text extraction
+pymupdf
+PyPDF2
+
+# Cross-encoder reranking
+sentence-transformers
+
+# Chunking (logical document splitter)
+langchain-text-splitters
+
+# Chat UI
+gradio
+
+# Utilities / experiment tooling
+pandas
+matplotlib
+scikit-learn
+google-genai
