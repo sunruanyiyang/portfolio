@@ -9,7 +9,7 @@ I am a sophomore student at Duke Kunshan University, currently intending to majo
 
 I am interested in the intersection of computation, physical systems, sensing, and human-computer interaction.
 
-My experience includes Python programming, Arduino, sensors, physical computing, 3D printing, and hands-on prototyping.
+My experience includes Python programming, Arduino, sensors, physical computing, 3D printing, hands-on prototyping, and digital logic.
 
 
 ## About Me
@@ -61,15 +61,24 @@ Data processing · NLP · Information retrieval · AI application development
 
 [View Project](./pharmaceutical-document-intelligence)
 
-### 4. S-Box Hardware Optimization
+### 4. Low-Latency Boolean Circuit Synthesis for a 6-bit S-Box
 
-An ongoing project exploring logic synthesis and hardware optimization for cryptographic S-box implementations, in order to reduce the delay on the critical path.
+A research-oriented project exploring methods for synthesizing low-delay gate-level implementations of a 6-bit S-box.
 
 **Technologies:**  
-abc · Verilog · SAT Solving · Yosys · Digital Logic
+Python · Verilog · Yosys · ABC · SAT · Kissat · OpenSTA
 
 **Skills:**  
 Algorithmic optimization · Hardware design · Logic synthesis · Debugging
+
+**Highlights:**  
+
+- Verified a y0 implementation with a critical-path delay of 123.03 ps
+- Developed a SAT-based exact synthesis pipeline
+- Explored heuristic search and Shannon decomposition
+- Performed independent functional verification and static timing analysis
+
+[View Project](./sbox-low-latency-synthesis)
 
 ---
 
@@ -90,6 +99,14 @@ Algorithmic optimization · Hardware design · Logic synthesis · Debugging
 ### Digital Fabrication
 - 3D printing
 - Basic CAD / physical prototyping
+
+### Digital Logic / Hardware
+- Boolean Logic
+- Logic Synthesis
+- SAT Solving
+- Yosys
+- ABC
+- OpenSTA
 
 ### Other
 - Data analysis
