@@ -1,0 +1,10 @@
+# Python dependencies.
+
+# All code shipped in this repository uses only the Python standard library
+# (os, sys, re, subprocess, dataclasses, itertools, ...). There are no
+# pip-installable Python requirements.
+
+# External tools that are NOT pip-installable:
+#   - kissat       (SAT solver; exact_synthesis/ shells out to it)
+#   - Yosys + ABC  (logic synthesis, scripts/abc_*.ys)
+#   - OpenSTA      (static timing analysis, scripts/sta.tcl)

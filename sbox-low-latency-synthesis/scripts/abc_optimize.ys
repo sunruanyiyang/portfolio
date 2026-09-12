@@ -1,0 +1,29 @@
+# abc_optimize.ys
+# Delay-oriented Yosys + ABC optimization flow (originally run.ys).
+# Runs repeated rebalancing + SAT restructuring passes with a 170 ps
+# delay target; intended for a single-output y0 netlist.
+#   yosys -s scripts/abc_optimize.ys
+#
+# NOTE: the target netlist was originally rtl/y0_FINAL_best_delay.v; it is
+# now pointed at the curated final netlist rtl/optimized/y0_final.v.
+# NangateOpenCellLibrary_filtered.lib is NOT redistributed in this repo --
+# place your local copy next to the script or adjust the path below.
+read_liberty -lib NangateOpenCellLibrary_filtered.lib
+read_verilog rtl/optimized/y0_final.v
+hierarchy -top y0
+flatten
+techmap
+opt_clean -purge
+
+# ABC深度时序优化脚本，多次重平衡+SAT重构，专门优化组合逻辑延迟
+abc -liberty NangateOpenCellLibrary_filtered.lib \
+    -D 170 \
+    -script "+strash; dch; drf; balance; resub -K 8; dchoice; balance; sat; balance; dchoice; balance; sat; balance; resub -K 4; map; print_stats;"
+
+# 时序负载分析 + 输出完整时序统计
+ltp
+stat -liberty NangateOpenCellLibrary_filtered.lib
+
+#write_verilog y0_optimized_netlist.v
+#write_verilog y0_optimized_tree.v
+#show -format dot -prefix y0_graph2

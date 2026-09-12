@@ -1,0 +1,128 @@
+digraph y0 {
+  rankdir=LR;
+  node [shape=box, style=rounded];
+
+  // Inputs
+  x0 [label="x0", shape=ellipse, style=filled, fillcolor=lightblue];
+  x1 [label="x1", shape=ellipse, style=filled, fillcolor=lightblue];
+  x2 [label="x2", shape=ellipse, style=filled, fillcolor=lightblue];
+  x3 [label="x3", shape=ellipse, style=filled, fillcolor=lightblue];
+  x4 [label="x4", shape=ellipse, style=filled, fillcolor=lightblue];
+  x5 [label="x5", shape=ellipse, style=filled, fillcolor=lightblue];
+
+  // Logic Gates
+  n1 [label="leaf_000_pos\nx0 & x1 & nx3 | nx0 & nx1 & x3 | x0 & nx..."];
+  n2 [label="leaf_000\n~leaf_000_pos"];
+  n3 [label="leaf_001_pos\nnx0 & nx1 & nx3 | x0 & nx1 & nx3 | nx0 &..."];
+  n4 [label="leaf_001\n~leaf_001_pos"];
+  n5 [label="leaf_010_pos\nnx0 & nx1 & nx3 | x0 & nx1 & x3"];
+  n6 [label="leaf_010\n~leaf_010_pos"];
+  n7 [label="leaf_011_pos\nnx0 & nx1 & nx3 | x0 & nx1 & nx3 | nx0 &..."];
+  n8 [label="leaf_011\n~leaf_011_pos"];
+  n9 [label="leaf_100_pos\nnx0 & nx1 & nx3 | nx0 & x1 & nx3 | x0 & ..."];
+  n10 [label="leaf_100\n~leaf_100_pos"];
+  n11 [label="leaf_101_pos\nx0 & nx1 & nx3 | nx0 & x1 & nx3 | nx0 & ..."];
+  n12 [label="leaf_101\n~leaf_101_pos"];
+  n13 [label="leaf_110_pos\nnx0 & x1 & nx3 | x0 & x1 & nx3"];
+  n14 [label="leaf_110\n~leaf_110_pos"];
+  n15 [label="leaf_111_pos\nnx0 & nx1 & nx3 | nx0 & x1 & nx3 | x0 & ..."];
+  n16 [label="leaf_111\n~leaf_111_pos"];
+  n17 [label="l2_0\n~((leaf_001 | nx5) & (leaf_000 | x5))"];
+  n18 [label="l2_1\n~((leaf_011 | nx5) & (leaf_010 | x5))"];
+  n19 [label="l2_2\n~((leaf_101 | nx5) & (leaf_100 | x5))"];
+  n20 [label="l2_3\n~((leaf_111 | nx5) & (leaf_110 | x5))"];
+  n21 [label="l1_0\n~((l2_1 | nx4) & (l2_0 | x4))"];
+  n22 [label="l1_1\n~((l2_3 | nx4) & (l2_2 | x4))"];
+  n23 [label="y0_n\n~((l1_1 | nx2) & (l1_0 | x2))"];
+
+  // Output
+  y0 [label="y0", shape=ellipse, style=filled, fillcolor=lightgreen];
+
+  // Edges
+  x0 -> n1;
+  x0 -> n1 [style=dashed];
+  x1 -> n1;
+  x1 -> n1 [style=dashed];
+  x3 -> n1;
+  x3 -> n1 [style=dashed];
+  n1 -> n2;
+  x0 -> n3;
+  x0 -> n3 [style=dashed];
+  x1 -> n3;
+  x1 -> n3 [style=dashed];
+  x3 -> n3;
+  x3 -> n3 [style=dashed];
+  n3 -> n4;
+  x0 -> n5;
+  x0 -> n5 [style=dashed];
+  x1 -> n5;
+  x1 -> n5 [style=dashed];
+  x3 -> n5;
+  x3 -> n5 [style=dashed];
+  n5 -> n6;
+  x0 -> n7;
+  x0 -> n7 [style=dashed];
+  x1 -> n7;
+  x1 -> n7 [style=dashed];
+  x3 -> n7;
+  x3 -> n7 [style=dashed];
+  n7 -> n8;
+  x0 -> n9;
+  x0 -> n9 [style=dashed];
+  x1 -> n9;
+  x1 -> n9 [style=dashed];
+  x3 -> n9;
+  x3 -> n9 [style=dashed];
+  n9 -> n10;
+  x0 -> n11;
+  x0 -> n11 [style=dashed];
+  x1 -> n11;
+  x1 -> n11 [style=dashed];
+  x3 -> n11;
+  x3 -> n11 [style=dashed];
+  n11 -> n12;
+  x0 -> n13;
+  x0 -> n13 [style=dashed];
+  x1 -> n13;
+  x3 -> n13;
+  x3 -> n13 [style=dashed];
+  n13 -> n14;
+  x0 -> n15;
+  x0 -> n15 [style=dashed];
+  x1 -> n15;
+  x1 -> n15 [style=dashed];
+  x3 -> n15;
+  x3 -> n15 [style=dashed];
+  n15 -> n16;
+  x5 -> n17;
+  x5 -> n17 [style=dashed];
+  n2 -> n17;
+  n4 -> n17;
+  x5 -> n18;
+  x5 -> n18 [style=dashed];
+  n6 -> n18;
+  n8 -> n18;
+  x5 -> n19;
+  x5 -> n19 [style=dashed];
+  n10 -> n19;
+  n12 -> n19;
+  x5 -> n20;
+  x5 -> n20 [style=dashed];
+  n14 -> n20;
+  n16 -> n20;
+  x4 -> n21;
+  x4 -> n21 [style=dashed];
+  n17 -> n21;
+  n18 -> n21;
+  x4 -> n22;
+  x4 -> n22 [style=dashed];
+  n19 -> n22;
+  n20 -> n22;
+  x2 -> n23;
+  x2 -> n23 [style=dashed];
+  n21 -> n23;
+  n22 -> n23;
+  n23 -> y0;
+
+  label = "y0 Circuit: x2→x4→x5 | Delay: 156.83ps | Cells: 24";
+}
